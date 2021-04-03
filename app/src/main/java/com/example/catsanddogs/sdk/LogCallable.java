@@ -8,12 +8,15 @@ import java.io.OutputStreamWriter;
 import java.util.concurrent.Callable;
 
 class LogCallable implements Callable<String> {
+    static final String fileName = "messageToToast.txt";
     String message;
     Context context;
+    FileUpdateManager fileUpdateManager;
 
-    LogCallable(String message, Context context) {
+    LogCallable(String message, Context context, FileUpdateManager fileUpdateManager) {
         this.message = message;
         this.context = context;
+        this.fileUpdateManager = fileUpdateManager;
     }
 
     @Override
@@ -21,10 +24,13 @@ class LogCallable implements Callable<String> {
         // Write in Logcat
         Log.println(Log.DEBUG, "LogCallable", message);
 
-        // Write to a file called messageToToast.txt
-        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("messageToToast.txt", Context.MODE_PRIVATE));
+        // Write to a file
+        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fileName, Context.MODE_PRIVATE));
         outputStreamWriter.write(message);
         outputStreamWriter.close();
+
+        // Notify the FileUpdateManager instance
+        fileUpdateManager.notifyUpdate();
 
         return message;
     }

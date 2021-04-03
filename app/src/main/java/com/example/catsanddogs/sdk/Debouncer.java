@@ -24,7 +24,7 @@ class Debouncer<T> implements Runnable {
         } catch (InterruptedException e) {
             Log.println(Log.DEBUG, "Debouncer", "Previous call was cancelled. A new call is ongoing now...");
         } catch (IOException e) {
-            Log.e("IOException", "File write failed: " + e.toString());
+            Log.e("IOException", "File operation failed: " + e.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }

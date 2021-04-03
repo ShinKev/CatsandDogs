@@ -5,6 +5,7 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -22,10 +23,12 @@ public class CsAnalytics {
     private final Debouncer<String> debouncer = new Debouncer<>(null);
     private Thread thread;
 
-    private Context context;
+    private final Context context;
+    private final FileUpdateManager fileUpdateManager;
 
     public CsAnalytics(@NonNull Context context) {
         this.context = context;
+        this.fileUpdateManager = new FileUpdateManager(LogCallable.fileName, context);
     }
 
     public void trigger(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -33,8 +36,14 @@ public class CsAnalytics {
         //Don't forget the thread and debounce timer.
 
         Pet pet = petList.get(position);
-        String messageToPrint = "Position " + position + ". There are " + pet.numberOfPets + " " + pet.petType + "(s).";
-        Callable<String> callable = new LogCallable(messageToPrint, context);
+        String messageToPrint;
+
+        if (pet.numberOfPets == 1)
+            messageToPrint = "Position " + position + ". There is 1 " + pet.petType + ".";
+        else
+            messageToPrint = "Position " + position + ". There are " + pet.numberOfPets + " " + pet.petType + "s.";
+
+        Callable<String> callable = new LogCallable(messageToPrint, context, fileUpdateManager);
 
         if (thread == null || !thread.isAlive()) {
             lastTriggerTimeMillis = System.currentTimeMillis();
@@ -65,6 +74,9 @@ public class CsAnalytics {
 
     public void clear() {
         //Clears the log file.
+
+        File file = new File(LogCallable.fileName);
+        file.delete();
     }
 
 }
