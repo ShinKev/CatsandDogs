@@ -22,7 +22,10 @@ public class CsAnalytics {
     private final Debouncer<String> debouncer = new Debouncer<>(null);
     private Thread thread;
 
+    private Context context;
+
     public CsAnalytics(@NonNull Context context) {
+        this.context = context;
     }
 
     public void trigger(@NonNull RecyclerView.ViewHolder holder, int position) {
@@ -31,7 +34,7 @@ public class CsAnalytics {
 
         Pet pet = petList.get(position);
         String messageToPrint = "Position " + position + ". There are " + pet.numberOfPets + " " + pet.petType + "(s).";
-        Callable<String> callable = new LogCallable(messageToPrint);
+        Callable<String> callable = new LogCallable(messageToPrint, context);
 
         if (thread == null || !thread.isAlive()) {
             lastTriggerTimeMillis = System.currentTimeMillis();

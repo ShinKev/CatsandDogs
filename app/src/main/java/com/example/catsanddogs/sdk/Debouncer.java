@@ -2,6 +2,7 @@ package com.example.catsanddogs.sdk;
 
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.concurrent.Callable;
 
 import static java.lang.Thread.sleep;
@@ -22,6 +23,8 @@ class Debouncer<T> implements Runnable {
             resetTimeToWaitUntilCall();
         } catch (InterruptedException e) {
             Log.println(Log.DEBUG, "Debouncer", "Previous call was cancelled. A new call is ongoing now...");
+        } catch (IOException e) {
+            Log.e("IOException", "File write failed: " + e.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
