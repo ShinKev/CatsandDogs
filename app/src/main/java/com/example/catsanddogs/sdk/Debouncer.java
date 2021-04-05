@@ -2,6 +2,8 @@ package com.example.catsanddogs.sdk;
 
 import android.util.Log;
 
+import com.example.catsanddogs.BuildConfig;
+
 import java.io.IOException;
 import java.util.concurrent.Callable;
 
@@ -22,7 +24,7 @@ class Debouncer<T> implements Runnable {
             callable.call();
             resetTimeToWaitUntilCall();
         } catch (InterruptedException e) {
-            Log.println(Log.DEBUG, "Debouncer", "Previous call was cancelled. A new call is ongoing now...");
+            Log.d("Debouncer", "Previous call was cancelled. A new call is ongoing now...");
         } catch (IOException e) {
             Log.e("IOException", "File operation failed: " + e.toString());
         } catch (Exception e) {

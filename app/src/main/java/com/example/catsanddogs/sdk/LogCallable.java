@@ -22,7 +22,7 @@ class LogCallable implements Callable<String> {
     @Override
     public String call() throws IOException {
         // Write in Logcat
-        Log.println(Log.DEBUG, "LogCallable", message);
+        Log.d("LogCallable", message);
 
         // Write to a file
         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput(fileName, Context.MODE_PRIVATE));
