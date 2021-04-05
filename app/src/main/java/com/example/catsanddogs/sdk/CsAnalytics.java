@@ -63,7 +63,7 @@ public class CsAnalytics {
     public void track(@NonNull RecyclerView.ViewHolder holder, int position) {
         //Registers all the pets from each grid.
 
-        if (holder.itemView.getContentDescription() == CAT) {
+        if (petList.size() == position && holder.itemView.getContentDescription() == CAT) {
             numberOfCats += 1;
             petList.add(new Pet(CAT, numberOfCats));
         } else {
