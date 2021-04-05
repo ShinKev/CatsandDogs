@@ -8,27 +8,31 @@ public class Model {
 
     static String CAT = "cat";
     static String DOG = "dog";
-    private String[] mPetList;
+    static private String[] mPetList;
     private Context mContext;
+
+    static {
+        mPetList = createPetList();
+    }
 
     public Model(Context context){
         mContext = context;
     }
 
     public MyAdapter populateAdapterData(){
-        return new MyAdapter(mContext, createPetList());
+        return new MyAdapter(mContext, mPetList);
     }
 
-    public String[] createPetList() {
-        mPetList = new String[200];
-        for(int i=0;i<mPetList.length;i++)
+    static public String[] createPetList() {
+        String[] localPetList = new String[200];
+        for(int i=0;i<localPetList.length;i++)
         {
-            mPetList[i] = randomFill();
+            localPetList[i] = randomFill();
         }
-        return mPetList;
+        return localPetList;
     }
 
-    private String randomFill(){
+    static private String randomFill(){
         Random random = new Random();
         boolean isOne = random.nextBoolean();
         if (isOne) return CAT;
