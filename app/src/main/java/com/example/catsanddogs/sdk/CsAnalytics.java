@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 public class CsAnalytics {
 
@@ -22,6 +21,7 @@ public class CsAnalytics {
     static final long totalTimeToWaitInMillisec = 2000;
     private final Debouncer<String> debouncer = new Debouncer<>(null);
     private Thread thread;
+    LogCallable callable;
 
     private final Context context;
     private final FileUpdateManager fileUpdateManager;
@@ -43,7 +43,7 @@ public class CsAnalytics {
         else
             messageToPrint = "Position " + position + ". There are " + pet.numberOfPets + " " + pet.petType + "s.";
 
-        Callable<String> callable = new LogCallable(messageToPrint, context, fileUpdateManager);
+        callable = new LogCallable(messageToPrint, context, fileUpdateManager);
 
         if (thread == null || !thread.isAlive()) {
             lastTriggerTimeMillis = System.currentTimeMillis();
